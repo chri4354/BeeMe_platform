@@ -8,9 +8,15 @@ In the press and on social media:
 
 <a href=https://www.businessinsider.com/mit-halloween-project-beeme-hive-2018-10>on Business Insider</a>
 
+<a href=https://www.technologyreview.com/s/612362/the-internet-is-taking-over-a-persons-life-for-halloween-and-you-can-be-a-part-of-it/>on MIT Tech Review</a>
+
 <a href=https://www.bostonglobe.com/metro/2018/10/23/mit-media-lab-releasing-social-experiment-halloween-that-will-let-users-control-person-actions/fzuktp5C7A5qT2M6wPMuzO/story.html>on The Boston Globe</a>
 
 <a href=https://www.theverge.com/2018/10/26/18029334/mit-media-lab-halloween-beeme-social-experiment>on The Verge</a>
+
+<a href=https://retina.elpais.com/retina/2018/10/31/innovacion/1540971232_269214.html>on El Pais</a>
+
+<a href=https://www.repubblica.it/tecnologia/2018/10/29/news/un_software_controlla_la_tua_mente_la_sfida_del_mit_per_halloween-210313504/>on La Repubblica</a>
 
 <a href=https://www.geek.com/tech/mit-launches-dystopian-internet-game-on-halloween-1758097/>on Geek</a>
 
