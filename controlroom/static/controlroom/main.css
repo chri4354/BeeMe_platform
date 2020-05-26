@@ -1,0 +1,58 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.fa-minus-square {
+    color: #dc3545;
+}
+
+.fa-plus-square {
+    color: #28a745;
+}
+
+/* hide radio buttons + formatting */
+label > input {
+    visibility: hidden;
+    position: absolute;
+}
+
+label > input + i {
+    cursor: pointer;
+    border: 3px solid transparent;
+}
+
+label > input:checked + i {
+    /* change how the icon looks when the radio button is selected */    
+}
+
+#command-queue {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+
+body.login { }
+body.login form { background-color:#eee; max-width:360px; margin:20vh auto 0 auto; padding:30px; }
+body.login form div.password-reset-link { font-size:0.8em; }
+body.login form div.buttons { margin-top:20px; }
+
+
+td.votes { }
+td.votes var { display:block; font-style:normal; text-align:center; }
+td.votes div.vote-buttons { min-width:48px; text-align:center; }
+td.votes div.vote-buttons button.btn-vote {
+	background-color: transparent;
+	cursor: pointer;
+	border: none;
+	padding: 0;
+}
+td.votes div.vote-buttons button.btn-vote:focus { outline:none; }
+
+
+form#experimenter_entry { border: 1px solid #000; margin:0 0 10px 0; text-align:right; }
+form#experimenter_entry button.btn { border-radius:0px; border-left: 1px solid #000; border-top: 1px solid #000; }
+form#experimenter_entry textarea { border:none; height:50px; margin:0; padding:5px; resize:none; text-align:left; width:100%; }
+
+#experimenter_msg { background-color:#ddd; border-radius:3px; min-height:40px; margin-bottom:20px; padding:10px 20px; width:100%; }
+
+header.header { font-size:0.85em; text-align:right; }

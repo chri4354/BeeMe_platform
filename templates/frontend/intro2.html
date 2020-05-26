@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+
+{% block head %}
+{% endblock %}
+
+
+{% block main %}
+
+<main class="content-main" role="main">
+<div class="content-main-margin">
+
+<h1>The Plan</h1>
+
+<p>Human effort has so far been futile against Zookd. The Wisdom Program has thus been called into action. The Wisdom Program is an international secret program whose mission is to create super-human intelligence through a synthesis of AI and collective intelligence.
+
+The Wisdom Program has deployed “Winter”, a special agent trained from very young age. Winter relies on the distributed intelligence of thousands of intelligent autonomous digital agents known as bees, short for Behavioral Enhancement Entities. Each bee has a different personality, character and preferences. Bees are the cornerstone of the Wisdom Program. 
+
+You are one of such bees. Winter&#39;s intelligence comes from the coordinated effort of bees like you. Her actions will entirely be dictated by your commands, unless they violate her internal rules of self-preservation and moral action. Winter&#39;s behavior might at times be not as smooth as you intend. But Winter is learning. Hopefully, she will get better with time. 
+
+As more information is collected about the current state of Zookd, it will be communicated to Winter. Updates will appear on the top-left of your control unit. 
+
+Good luck
+
+</p>
+
+<p>
+<a href="{% url 'frontend:room' %}">Click here to start participating in the story.</a>
+</p>
+
+</div>
+</main>
+
+{% endblock %}
+
+
+{% block javascript %}
+<script>
+$(function(){
+
+	
+
+});
+</script>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+
+{% block head %}
+<style>
+blockquote.message {
+	border-left: 3px #eee solid;
+	padding-left: 1em;
+	padding-bottom: 0.25em;
+	padding-top: 0.25em;
+}
+
+.blockquote-footer { font-size: 0.85rem; }
+</style>
+{% endblock %}
+
+
+{% block main %}
+
+<main class="content-main" role="main">
+<div class="content-main-margin">
+
+<h1 style="margin-bottom:1em;">Command History</h1>
+
+{% for command in commands %}
+<blockquote class="blockquote message" data-id="{{ command.id }}">
+	<p class="mb-0">{{ command.text }}</p>
+	<footer class="blockquote-footer">
+		{{ command.timestamp|date }}
+	</footer>
+</blockquote>
+{% endfor %}
+
+</div>
+</main>
+
+{% endblock %}
+
+
+{% block javascript %}
+<script>
+$(function(){
+
+	
+
+});
+</script>
+{% endblock %}

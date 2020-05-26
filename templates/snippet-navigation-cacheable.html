@@ -1,0 +1,51 @@
+{% load staticfiles %}
+
+<div role="navigation">
+	<ul class="">
+		<li class="logo">
+			<a href="/">
+				<img src="{% static 'img/beeme-logo-dark.webp' %}" title="BeeMe" />
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="{% url 'frontend:room' %}">
+				Room
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="{% url 'frontend:rules' %}">
+				Rules
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="{% url 'frontend:story' %}">
+				Story
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="{% url 'frontend:credits' %}">
+				Credits
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="{% url 'frontend:about' %}">
+				About
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="{% url 'frontend:diy' %}">
+				DIY
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="{% url 'frontend:gallery' %}">
+				Gallery
+			</a>
+		</li>
+		<li class="end">
+			<a href="{% url 'login' %}">
+				Login
+			</a>
+		</li>
+	</ul>
+</div>

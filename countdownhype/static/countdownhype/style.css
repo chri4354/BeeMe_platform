@@ -1,0 +1,55 @@
+body {
+    background: #000000;
+}
+
+.noselect {
+              user-drag: none;
+      -webkit-user-drag: none;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+.row {
+    width: 100%;
+}
+
+#bme {
+    display: block;
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (min-width : 320px) {
+    #bme {
+        width: 100%;
+        height: auto;
+        margin: 0 auto;
+    }
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (min-width : 480px) {
+    #bme {
+        /* same as min-width: 320px*/
+    }
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+    #bme {
+        /* same as min-width: 320px; */
+    }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+    #bme {
+        width: 900px;
+        height: auto;
+        margin: 0 auto;
+    }
+}

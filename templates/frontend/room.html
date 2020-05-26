@@ -1,0 +1,641 @@
+{% extends "base-3col.html" %}
+{% load staticfiles %}
+
+
+{% block head %}
+<script src="https://js.pusher.com/4.3/pusher.min.js"></script>
+<script src="{% if debug %}https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js{% else %}https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.min.js{% endif %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+{% endblock %}
+
+
+{% block main %}
+
+<main class="content-main" role="main" data-team="{{ team.no }}">
+	<div class="video-area">
+	{{ team.media|safe }}
+	</div>
+</main>
+
+<div class="modal fade" id="login_modal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-body">
+				<p style="padding:1em 0;">You must login before you can vote or send a command.</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+				<a class="btn btn-primary btn-sm" href="{% url 'login' %}?next={{ request.path  }}">Login</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+
+{% block left %}
+
+<div class="card card-hive">
+	<h5 class="card-header">Task in Progress</h5>
+
+	{% if request.user.is_staff %}
+	<form class="card-form" method="post" id="task-form" style="padding-top:0;">
+		<textarea placeholder="Set current task ..." maxlength="250"></textarea>
+
+		<div class="row no-gutters">
+			<div class="col-6"><button type="submit" class="btn btn-primary btn-block">Submit</button></div>
+			<div class="col-6"><button type="button" class="btn btn-secondary btn-block">Done</button></div>
+		</div>
+	</form>
+	{% endif %}
+
+	<div class="card-body" {% if not task %}style="display:none;"{% endif %}>
+		<div class="card-text" id="current_task" style="padding:0;" {% if task %}data-id="{{ task.id }}"{% endif %}>{% if task %}{{ task.text }}{% endif %}</div>
+	</div>
+</div>
+
+<div class="card card-hive">
+	<h5 class="card-header">Messages from the Hive</h5>
+
+	{% if request.user.is_staff %}
+	<form class="card-form" method="post" id="hive-form" style="padding-top:0;">
+		<textarea placeholder="Send global message..." maxlength="10000"></textarea>
+
+		<div class="row no-gutters">
+			<div class="col-12"><button type="submit" class="btn btn-primary btn-block">Send</button></div>
+		</div>
+	</form>
+	{% endif %}
+
+	<div class="card-body">
+		{% if message %}
+		<div class="card-text" id="hive_msg" data-id="{{ message.id }}">{{ message.text }}</div>
+		{% else %}
+		<div class="card-text placeholder" id="hive_msg">Watch here for alerts!</div>
+		{% endif %}
+	</div>
+
+	<div class="card-footer text-center text-muted" style="font-size: 0.75rem;">
+		<a href="{% url 'frontend:history' %}">view message history</a>
+	</div>
+</div>
+
+{% endblock %}
+
+
+{% block right %}
+
+<div class="card card-queue" id="command_queue" v-show="commands_queued.length > 0">
+	<h5 class="card-header">Command in Progress</h5>
+
+	<div class="card-body">
+
+		<div v-for="command in commands_queued" class="command">
+			<span>{% verbatim %}{{ command.text }}{% endverbatim %}</span>
+
+			{% if request.user.is_staff %}
+			<button type="button" class="btn btn-primary btn-sm float-right" v-on:click="done(command.id)">DONE</button>
+			{% endif %}
+		</div>
+
+	</div>
+
+	<div class="card-footer text-center text-muted" style="font-size: 0.75rem;">
+		<a href="{% url 'frontend:command_history' %}">view command history</a>
+	</div>
+</div>
+
+<div class="card card-votes" v-show="commands_top_five.length > 0">
+	<h5 class="card-header">
+		Top Commands
+	</h5>
+	<div class="card-body">
+		<ol>
+			<li v-for="command in commands_top_five">
+				<div class="command">
+					<div class="command-meta">
+						<button class="btn-vote" type="button" v-bind:value="command.id" v-on:click="up(command.id)" v-bind:disabled="command.has_voted_up" title="vote up"><i class="fas fa-chevron-up" v-bind:value="command.id"></i></button><br />
+						<span>{% verbatim %}{{ command.adjusted_votes }}{% endverbatim %}</span><br />
+						<button class="btn-vote" type="button" v-bind:value="command.id" v-on:click="down(command.id)" v-bind:disabled="command.has_voted_down" title="vote down"><i class="fas fa-chevron-down" v-bind:value="command.id"></i></button>
+					</div>
+					<div class="command-text">
+						{% verbatim %}{{ command.text }}{% endverbatim %}
+					</div>
+					{% if request.user.is_staff %}
+					<div class="command-admin">
+						<button class="btn-flag" type="button" v-bind:value="command.id" v-on:click="flag(command.id)" title="flag command"><i class="fas fa-flag"></i></button>
+					</div>
+					{% endif %}
+				</div>
+			</li>
+		</ol>
+	</div>
+</div>
+
+<div class="card card-votes" v-show="commands_last_five.length > 0">
+	<h5 class="card-header">
+		Latest Commands
+	</h5>
+	<div class="card-body">
+		<ol>
+			<li v-for="command in commands_last_five">
+				<div class="command">
+					<div class="command-meta">
+						<button class="btn-vote" type="button" v-bind:value="command.id" v-on:click="up(command.id)" v-bind:disabled="command.has_voted_up" title="vote up"><i class="fas fa-chevron-up" v-bind:value="command.id"></i></button><br />
+						<span>{% verbatim %}{{ command.adjusted_votes }}{% endverbatim %}</span><br />
+						<button class="btn-vote" type="button" v-bind:value="command.id" v-on:click="down(command.id)" v-bind:disabled="command.has_voted_down" title="vote down"><i class="fas fa-chevron-down" v-bind:value="command.id"></i></button>
+					</div>
+					<div class="command-text">
+						{% verbatim %}{{ command.text }}{% endverbatim %}
+					</div>
+				</div>
+			</li>
+		</ol>
+	</div>
+</div>
+
+<div class="card card-send-command">
+	<form class="card-body" method="post" id="command-form">
+		<textarea maxlength="50" placeholder="Send your own command..."></textarea>
+		<div class="text-right">
+			<button type="submit" class="btn btn-sm">Submit</button>
+		</div>
+	</form>
+</div>
+
+{% endblock %}
+
+
+{% block javascript %}
+
+{{ commands|json_script:"commands" }}
+{{ queue|json_script:"queue" }}
+{{ pusher_config|json_script:"pusher_config" }}
+
+<script>
+window.typewriter_ctask = new TypeWriter( document.getElementById('current_task') );
+window.typewriter_hive = new TypeWriter( document.getElementById('hive_msg') );
+
+
+function Room(me) {
+
+	var self = this;
+
+
+	self.votes_down = null;
+	self.votes_up = null;
+
+
+	self.init = function init() {
+		self.votes_down = [];
+		self.votes_up = [];
+
+		self.restore();
+	};
+
+
+	self.adjust_votes = function adjust_votes(commands) {
+		var now = moment();
+
+		for (var i=0; i<commands.length; i++) {
+			var command = commands[i];
+
+			var timestamp = moment(command.timestamp);
+			var duration = moment.duration(now.diff(timestamp));
+			var seconds = Math.ceil( duration.asSeconds() );
+
+			command.adjusted_votes = command.votes.value;
+
+			//if (command.by == me) self.add_up_voted(command.id);
+
+			command.has_voted = self.has_voted(command.id);
+			command.has_not_voted = !(command.has_voted);
+
+			command.has_voted_down = self.has_voted_down(command.id);
+			command.has_not_voted_down = !(command.has_voted_down);
+
+			command.has_voted_up = self.has_voted_up(command.id);
+			command.has_not_voted_up = !(command.has_voted_up);
+		}
+
+		return commands;
+	};
+
+	self.add_down_voted = function add_down_voted(command_id) {
+		var idx = null;
+
+		idx = jQuery.inArray(command_id, self.votes_down);
+		if (idx == -1) self.votes_down.push(command_id);
+
+		idx = jQuery.inArray(command_id, self.votes_up);
+		if (idx > -1) {
+			self.votes_up.splice(idx);
+		}
+
+		self.commit();
+	};
+
+	self.add_up_voted = function add_up_voted(command_id) {
+		var idx = null;
+
+		idx = jQuery.inArray(command_id, self.votes_up);
+		if (idx == -1) self.votes_up.push(command_id);
+
+		idx = jQuery.inArray(command_id, self.votes_down);
+		if (idx > -1) {
+			self.votes_down.splice(idx);
+		}
+
+		self.commit();
+	};
+
+	self.commit = function commit() { };
+
+	self.has_voted = function has_voted(command_id) {
+		if ( jQuery.inArray(command_id, self.votes_down) > -1 ) return true;
+		if ( jQuery.inArray(command_id, self.votes_up) > -1 ) return true;
+		return false;
+	};
+
+	self.has_voted_down = function has_voted(command_id) {
+		if ( jQuery.inArray(command_id, self.votes_down) > -1 ) return true;
+		return false;
+	};
+
+	self.has_voted_up = function has_voted(command_id) {
+		if ( jQuery.inArray(command_id, self.votes_up) > -1 ) return true;
+		return false;
+	};
+
+	self.log = function log() {
+		console.log('down', self.votes_down);
+		console.log('up', self.votes_up);
+	};
+
+	self.restore = function restore() { };
+
+
+	self.init();
+
+}
+
+
+function adjust_text_size($elem, length) {
+	if ( length == 0 )
+		length = $elem.text().length;
+
+	var cssclass = '';
+
+	if ( length > 500 ) {
+		cssclass = 'text-xxs';
+	}
+	else if ( length > 200 ) {
+		cssclass = 'text-xs';
+	}
+	else if ( length > 50 ) {
+		cssclass = 'text-sm';
+	}
+
+	$elem.removeClass('text-sm').removeClass('text-xs').removeClass('text-xxs').addClass(cssclass);
+}
+
+
+if ( $('#current_task').text().length > 0 ) {
+	adjust_text_size($('#current_task'), 0);
+}
+if ( ! $('#hive_msg').hasClass('placeholder') ) {
+	adjust_text_size($('#hive_msg'), 0);
+}
+
+
+var commands = JSON.parse( document.getElementById('commands').textContent );
+{% if request.user.is_authenticated %}var is_authenticated = true;{% else%}var is_authenticated = false;{% endif %}
+
+
+window.room = new Room('{% if request.user.is_authenticated %}{{ request.user.id }}{% else%}0{% endif %}');
+
+
+var vm = new Vue({
+
+	el: '#dashboard_right',
+
+	data: {
+		commands_queued: window.room.adjust_votes(commands.queued),
+		commands_top_five: window.room.adjust_votes(commands.top_five),
+		commands_last_five: window.room.adjust_votes(commands.last_five),
+
+		post_url: '{{ request.path }}'
+	},
+
+	methods: {
+
+		refresh_latest_five: function refresh_latest_five(event) {
+			var promise = this.$http.get(this.post_url, { 'params':{
+				action: 'refresh_latest_five'
+			}});
+
+			promise.then(function(response){
+				vm.commands_last_five = window.room.adjust_votes(response.body);
+			}, function(response) {
+				
+			});
+		},
+		refresh_top_five: function refresh_top_five(event) {
+			var promise = this.$http.get(this.post_url, { 'params':{
+				action: 'refresh_top_five'
+			}});
+
+			promise.then(function(response){
+				vm.commands_top_five = window.room.adjust_votes(response.body);
+			}, function(response) {
+				
+			});
+		},
+
+		reload: function reload() {
+			vm.commands_queued = window.room.adjust_votes( vm.commands_queued.slice() );
+			vm.commands_top_five = window.room.adjust_votes( vm.commands_top_five.slice() );
+			vm.commands_last_five = window.room.adjust_votes( vm.commands_last_five.slice() );
+		},
+
+		up: function up(command_id) {
+			if ( is_authenticated ) {
+				window.room.add_up_voted(command_id);
+
+				var promise = this.$http.post(this.post_url, {
+					action: 'up',
+					id: command_id
+				});
+
+				promise.then(function(response){
+					var data = response.body.commands;
+
+					vm.commands_top_five = window.room.adjust_votes(data.top_five);
+					vm.commands_last_five = window.room.adjust_votes(data.last_five);
+				}, function(response) {
+					
+				});
+			}
+			else {
+				$('#login_modal').modal('show');
+			}
+		},
+		down: function down(command_id) {
+			if ( is_authenticated ) {
+				window.room.add_down_voted(command_id);
+
+				var promise = this.$http.post(this.post_url, {
+					action: 'down',
+					id: command_id
+				});
+
+				promise.then(function(response){
+					var commands = response.body.commands;
+
+					vm.commands_top_five = window.room.adjust_votes(commands.top_five);
+					vm.commands_last_five = window.room.adjust_votes(commands.last_five);
+				}, function(response) {
+					
+				});
+			}
+			else {
+				$('#login_modal').modal('show');
+			}
+		},
+
+		done: function done(command_id) {
+			var promise = this.$http.post(this.post_url, {
+				action: 'done',
+				id: command_id
+			});
+		},
+		flag: function flag(command_id) {
+			var promise = this.$http.post(this.post_url, {
+				action: 'flag',
+				id: command_id
+			});
+		},
+
+		show_queue: function show_queue() {
+			return false;
+		}
+	
+	}
+});
+
+
+Pusher.logToConsole = false;
+var pusher_config = JSON.parse( document.getElementById('pusher_config').textContent );
+var pusher = new Pusher(pusher_config.key, {
+	auth: {
+		headers: {
+			'X-CSRFToken': getCSRFToken()
+		}
+	},
+	authEndpoint: '/pusher/auth',
+	cluster: pusher_config.cluster,
+	forceTLS: true
+});
+
+{% if request.user.is_authenticated %}
+var private_channel = pusher.subscribe('private-{{ request.user.code }}');
+private_channel.bind('reload', function(data) {
+	window.location.href = window.location.href
+});
+{% endif %}
+
+var channel = pusher.subscribe('{{ channel }}');
+channel.bind('message-change', function(data) {
+	var $hive_msg = $('#hive_msg');
+
+	$hive_msg.data('id', data.id);
+
+	$hive_msg.removeClass('placeholder');
+
+	$hive_msg.text('');
+	adjust_text_size($hive_msg, data.msg.length);
+
+	window.typewriter_hive.start(data.msg);
+});
+channel.bind('task-change', function(data) {
+	var $current_task = $('#current_task');
+	var $card_body = $current_task.closest('.card-body');
+
+	$current_task.data('id', data.id);
+
+	if ( data.id ) {
+		$current_task.text('');
+		adjust_text_size($current_task, data.msg.length);
+		
+		if ( ! $card_body.is(':visible') ) {
+			$card_body.fadeIn('fast', function(){
+				window.typewriter_ctask.start(data.msg);
+			});
+		}
+		else {
+			window.typewriter_ctask.start(data.msg);
+		}
+	}
+	else {
+		$card_body.fadeOut('fast', function(){
+			$current_task.text('');
+		});
+	}
+
+});
+channel.bind('queue-change', function(data) {
+	vm.commands_queued = window.room.adjust_votes(data.queued);
+	vm.commands_top_five = window.room.adjust_votes(data.top_five);
+	vm.commands_last_five = window.room.adjust_votes(data.last_five);
+});
+channel.bind('votes-change', function(data) {
+	vm.commands_queued = window.room.adjust_votes(data.queued);
+	vm.commands_top_five = window.room.adjust_votes(data.top_five);
+	vm.commands_last_five = window.room.adjust_votes(data.last_five);
+});
+channel.bind('reload', function(data) {
+	window.location.href = window.location.href
+});
+
+</script>
+
+<script>
+$(function(){
+
+$('#login_modal').modal({
+	show: false
+});
+
+$('#command-form').keydown(function(e) {
+	if (e.ctrlKey && e.keyCode === 13) {
+		$(this).trigger('submit');
+	}
+});
+
+$('#command-form').submit(function(e){
+	if (e) e.preventDefault();
+
+	if ( is_authenticated ) {
+		var $form = $(this);
+		var $textarea = $form.find('textarea');
+
+		var text = jQuery.trim( $textarea.val() );
+
+		if (text) jQuery.ajax({
+			data: {
+				'action': 'command',
+				'text': text
+			},
+			method: 'POST',
+
+			error: function error(jqXHR, textStatus, errorThrown) {
+				var data = jqXHR.responseJSON;
+				if (data) alert( data.error || errorThrown );
+			},
+			success: function success(data) {
+				$textarea.val('');
+
+				var commands = data.commands;
+
+				vm.commands_top_five = window.room.adjust_votes(commands.top_five);
+				vm.commands_last_five = window.room.adjust_votes(commands.last_five);
+			}
+		});
+	}
+	else {
+		$('#login_modal').modal('show');
+	}
+
+	return false;
+});
+
+$('#task-form').submit(function(e){
+	if (e) e.preventDefault();
+
+	var $form = $(this);
+	var $textarea = $form.find('textarea');
+
+	var text = jQuery.trim( $textarea.val() );
+
+	if (text) jQuery.ajax({
+		data: {
+			'action': 'current_task',
+			'text': text
+		},
+		method: 'POST',
+
+		error: function error(jqXHR, textStatus, errorThrown) {
+			console.log(textStatus, errorThrown);
+		},
+		success: function success(data) {
+			$textarea.val('');
+		}
+	});
+
+	return false;
+});
+$('#task-form').keydown(function(e) {
+	if (e.ctrlKey && e.keyCode === 13) {
+		$(this).trigger('submit');
+	}
+});
+$('textarea', '#task-form').val('');
+$('button.btn-secondary', '#task-form').click(function(){
+	var $current_task = $('#current_task');
+
+	var task_id = $current_task.data('id');
+
+	jQuery.ajax({
+		data: {
+			'action': 'current_task_done',
+			'id': task_id
+		},
+		method: 'POST',
+
+		error: function error(jqXHR, textStatus, errorThrown) {
+			console.log(textStatus, errorThrown);
+		},
+		success: function success(data) {
+			
+		}
+	});
+});
+
+$('#hive-form').submit(function(e){
+	if (e) e.preventDefault();
+
+	var $form = $(this);
+	var $textarea = $form.find('textarea');
+
+	var text = jQuery.trim( $textarea.val() );
+
+	if (text) jQuery.ajax({
+		data: {
+			'action': 'hive_msg',
+			'text': text
+		},
+		method: 'POST',
+
+		error: function error(jqXHR, textStatus, errorThrown) {
+			console.log(textStatus, errorThrown);
+		},
+		success: function success(data) {
+			$textarea.val('');
+		}
+	});
+
+	return false;
+});
+$('#hive-form').keydown(function(e) {
+	if (e.ctrlKey && e.keyCode === 13) {
+		$(this).trigger('submit');
+	}
+});
+$('textarea', '#hive-form').val('');
+
+
+});
+</script>
+
+{% endblock %}

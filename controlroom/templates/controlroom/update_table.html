@@ -1,0 +1,32 @@
+<form name="{{ form_name }}">
+    <table class="table table-sm" method="POST">
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Votes</th>
+                <th scope="col">Command</th>
+            </tr>
+        <thead>
+        <tbody>
+            {% for command in commands %}
+            <tr>
+                <td class="align-middle">
+                    <div class="d-flex flex-column align-items-center pt-2 pr-1">
+                        <label>
+                            <input type="radio" name='command-{{ command.id }}' value='up' readonly="readonly" />
+                            <i class="fas fa-plus-square"></i>
+                        </label>
+                        <label>
+                            <input type="radio" name='command-{{ command.id }}' value='down' readonly="readonly" />
+                            <i class="fas fa-minus-square"></i>
+                        </label>
+                    </div>
+                </td>
+                <td class="align-middle" data-name="command-{{ command.id }}">{{ command.votes }}</td>
+                <td class="align-middle">{{ command.command_text }}</td>
+            </tr>
+            {% endfor %}
+        <tbody>
+    </table>
+    {% csrf_token %}
+</form>

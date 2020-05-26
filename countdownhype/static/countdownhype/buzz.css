@@ -1,0 +1,213 @@
+/* Adapted from Chris Rickels' 'Interference' https://codepen.io/cRckls/pen/tvbgG */
+
+/* Custom, iPhone Retina */
+@media only screen and (min-width : 320px) {
+    #how-does-it-feel {
+        height: 300px;
+    }
+
+    .buzz-wrapper {
+        width: 250px;
+        margin-left: 20px;
+        margin-top: 20px;
+    }
+
+    .buzz-wrapper span {
+        font-size: 46px;
+    }
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (min-width : 480px) {
+    #how-does-it-feel {
+        height: 400px;
+    }
+
+    .buzz-wrapper {
+        width: 300px;
+        margin-left: 20px;
+    }
+
+    .buzz-wrapper span {
+        font-size: 75px;
+    }
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+    #how-does-it-feel {
+        height: 550px;
+    }
+
+    .buzz-wrapper {
+        width: 620px;
+        margin-left: 25px;
+    }
+
+    .buzz-wrapper span {
+        font-size: 110px;
+    }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+    #how-does-it-feel {
+        height: 800px;
+    }
+
+    .buzz-wrapper {
+        width: 900px;
+        margin-left: 40px;
+    }
+
+    .buzz-wrapper span {
+        font-size: 160px;
+    }
+}
+
+
+#bme {
+    -webkit-animation: flicker 10s infinite;
+}
+
+.buzz-wrapper {
+    position: relative;
+    overflow: visible;
+    display: block;
+}
+
+.buzz-wrapper span {
+    position: absolute;
+    -webkit-filter: blue(1px);
+    font-family: 'Courier new', fixed;
+    font-weight: bold;
+    -webkit-animation: blur 30ms infinite, jerk 50ms infinite;
+}
+
+.buzz-wrapper span:nth-child(1) {
+    color: red;
+    margin-left: -2px;
+    -webkit-filter: blur(2px);
+}
+
+.buzz-wrapper span:nth-child(2) {
+    color: green;
+    margin-left: 2px;
+    -webkit-filter: blur(2px);
+    -webkit-animation: jerkgreen 1s infinite;
+}
+
+.buzz-wrapper span:nth-child(3) {
+    color: blue;
+    position: 20px 0;
+    -webkit-filter: blur(1px);
+    -webkit-animation: jerkblue 1s infinite;
+}
+
+.buzz-wrapper span:nth-child(4) {
+    color: white;
+    -webkit-filter: blur(1px);
+    text-shadow: 0 0 50px rgba(255, 255, 255, 0.4);
+}
+
+.buzz-wrapper span:nth-child(5) {
+    color: rgba(255, 255, 255, 0.4);
+    -webkit-filter: blur(15px);
+}
+
+.buzz-wrapper .text{
+    -webkit-animation: jerkwhole 5s infinite;
+    position: relative;
+}
+
+@-webkit-keyframes blur {
+    0%  { -webkit-filter: blur(1px); opacity: 0.8; }
+    50% { -webkit-filter: blur(1px); opacity: 1; }
+    100%{ -webkit-filter: blur(1px); opacity: 0.8; }
+}
+
+@-webkit-keyframes jerk {
+    50% { left: 1px; }
+    51% { left: 0; }
+}
+
+@-webkit-keyframes jerkup {
+    50% { top: 1px; }
+    51% { top: 0; }
+}
+
+@-webkit-keyframes jerkblue {
+    0%  { left: 0; }
+    30% { left: 0; }
+    31% { left: 10px; }
+    32% { left: 0; }
+    98% { left: 0; }
+    100%{ left: 10px; }
+}
+
+@-webkit-keyframes jerkgreen {
+    0%  { left:0; }
+    30% { left:0; }
+    31% { left:-10px; }
+    32% { left:0; }
+    98% { left:0; }
+    100%{ left:-10px; }
+}
+
+@-webkit-keyframes jerkwhole {
+    0%  {  }
+    30% {  }
+    40% { opacity: 1; top: 0; left: 0;  -webkit-transform:scale(1,1);  -webkit-transform:skew(0,0); }
+    41% { opacity: 0.8; top: 0px; left: -100px; -webkit-transform:scale(1,1.2); -webkit-transform:skew(50deg,0); }
+    42% { opacity: 0.8; top: 0px; left: 100px; -webkit-transform:scale(1,1.2); -webkit-transform:skew(-80deg,0); }
+    43% { opacity: 1; top: 0; left: 0; -webkit-transform:scale(1,1); -webkit-transform:skew(0,0); }
+    65% {  }
+    100%{  }
+}
+
+ @-webkit-keyframes flicker {
+    /* start: flicker bme */
+    /*0%      { opacity: 0; content: url("images/bme.png"); }*/
+    0%      { opacity: 0; content: url("images/twt.png"); }
+    2%      { opacity: 0; }
+    2.001%  { opacity: .4; }
+    2.5%    { opacity: .4; }
+    2.501%  { opacity: 0; }
+    4%      { opacity: 0; }
+    4.001%  { opacity: 1; }
+    4.5%    { opacity: 1; }
+    4.501%  { opacity: 0; }
+    /* end: flicker bme */
+    10%     { opacity: 0; }
+    15%     { opacity: 1; }
+    /* bme -> twt glitch */
+    20%     { top: 0; left: 0;  -webkit-transform:scale(1,1);  -webkit-transform:skew(0,0); }
+    20.5%   { top: 0px; left: -100px; -webkit-transform:scale(1,1.2); -webkit-transform:skew(50deg,0); }
+    21%     { opacity: 1; top: 0px; left: 100px; -webkit-transform:scale(1,1.2); -webkit-transform:skew(-80deg,0); }
+    21.5%   { opacity: 0; top: 0; left: 0; -webkit-transform:scale(1,1); -webkit-transform:skew(0,0); }
+    /*22.5%   { content: url("images/bme.png"); }*/
+    22.5%   { content: url("images/twt.png"); }
+    30%     { opacity: 0; content: url("images/twt.png"); }
+    /* flash twt */
+    30.001% { opacity: .4; }
+    30.5%   { opacity: .4; }
+    30.501% { opacity: 0; }
+    /* display twt */
+    35%     { opacity: 1; }
+    /* twt -> cam glitch */
+    70%     { top: 0; left: 0;  -webkit-transform:scale(1,1);  -webkit-transform:skew(0,0); }
+    70.5%   { top: 0px; left: -100px; -webkit-transform:scale(1,1.2); -webkit-transform:skew(50deg,0); }
+    71%     { opacity: 1; top: 0px; left: 100px; -webkit-transform:scale(1,1.2); -webkit-transform:skew(-80deg,0); }
+    71.5%   { opacity: 0; top: 0; left: 0; -webkit-transform:scale(1,1); -webkit-transform:skew(0,0); }
+    72.5%   { content: url("images/twt.png"); }
+    /*80%     { opacity: 0; content: url("images/cam.png"); }*/
+    80%     { opacity: 0; content: url("images/twt.png"); }
+    /* flash cam */
+    80.001% { opacity: .4; }
+    80.5%   { opacity: .4; }
+    80.501% { opacity: 0; }
+    /* display cam */
+    85%     { opacity: 1; }
+    /*100%    { opacity: 1; content: url("images/cam.png"); }*/
+    100%    { opacity: 1; content: url("images/twt.png"); }
+ }

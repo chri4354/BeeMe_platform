@@ -1,0 +1,20 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'countdownhype/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'countdownhype/buzz.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'countdownhype/screen.css' %}">
+
+<script type="text/javascript" src="{% static 'countdownhype/jquery-3.3.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'countdownhype/countdown.js' %}"></script>
+
+
+<div class="grid"></div>
+
+<div class="row">
+    <div class="buzz-wrapper">
+        <div class="text noselect" id="countdown-text">
+            {% for i in 'xxxxx' %}
+            <span>0:0:0:0</span>
+            {% endfor %}
+        </div>
+    </div>
+</div>

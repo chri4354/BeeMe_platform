@@ -1,0 +1,218 @@
+{% load bootstrap4 %}{% load socialaccount %}{% load static %}{% load story %}<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="{% static 'css/app.css' %}?v=9">
+
+	<title>{% block title %}{{ title|default:"BeeMe"}}{% endblock %}</title>
+
+{% block head %}{% endblock %}
+
+<style>
+.btn-social { color:#eee; font-size:13px; }
+.btn-social:hover { color:#fff; }
+
+.btn-facebook { background-color:#4456A3; border-color:#4456A3; }
+.btn-google { background-color:#32A8F4; border-color:#32A8F4; }
+.btn-twitter { background-color:#4179F7; border-color:#4179F7; }
+</style>
+
+</head>
+<body>
+{% providers_media_js %}
+
+<nav class="global-nav">
+	<div class="global-nav-inner">
+		<div class="container">
+
+{% include "snippet-navigation.html" %}
+
+		</div>
+	</div>
+</nav>
+
+<div id="page-outer">
+	<div id="page-container" class="container">
+
+		<div class="row">
+
+			<div class="col col-lg-5 col-md-6 col-sm-12 col-12">
+
+				<div class="card card-default" {% if is_signup %}style="display:none;"{% endif %}>
+					<div class="card-header">
+						Login
+					</div>
+					<form class="card-body" action="{% url 'login' %}" method="post" id="login_form">
+
+						{% if user.is_authenticated %}
+						<p class="errornote">
+							You are authenticated as {{ username }}, but are not authorized to
+							access this page. Would you like to login to a different account?
+						</p>
+						{% endif %}
+						
+						{% bootstrap_messages %}
+
+						{% if form.errors and not form.non_field_errors %}
+						<p class="errornote">
+						{% if form.errors.items|length == 1 %}Please correct the error below.{% endif %}
+						</p>
+						{% endif %}
+
+						{% if form.non_field_errors %}
+						{% for error in form.non_field_errors %}
+						<p class="errornote">
+							{{ error }}
+						</p>
+						{% endfor %}
+						{% endif %}
+
+						{% bootstrap_field form.username %}
+
+						{% bootstrap_field form.password %}
+
+						<div class="buttons" style="margin-bottom:10px;margin-top:30px;">
+							<button type="submit" class="btn btn-primary" id="login-btn">
+								Log In
+							</button>
+							<button type="button" class="btn btn-secondary">
+								Sign Up
+							</button>
+						</div>
+
+						{% url 'password_reset' as password_reset_url %}
+						{% if password_reset_url %}
+						<div class="password-reset-link" style="font-size:12px;">
+							<a href="{{ password_reset_url }}">Forgotten your password or username?</a>
+						</div>
+						{% endif %}
+						
+						{% csrf_token %}
+					</form>
+					<div class="card-footer text-muted">
+						<div class="row">
+
+							<div class="col col-4">
+								<a class="btn btn-social btn-facebook btn-block" href="{% provider_login_url 'facebook' method='oauth2' %}">
+									<i class="fab fa-facebook-f"></i> Facebook
+								</a>
+							</div>
+
+							<div class="col col-4">
+								<a class="btn btn-social btn-google btn-block" href="{% provider_login_url 'google' %}">
+									<i class="fab fa-google"></i> Google
+								</a>
+							</div>
+
+							<div class="col col-4">
+								<a class="btn btn-social btn-twitter btn-block" href="{% provider_login_url 'twitter' %}">
+									<i class="fab fa-twitter"></i> Twitter
+								</a>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+				<div class="card card-default" {% if not is_signup %}style="display:none;"{% endif %}>
+					<div class="card-header">
+						Sign Up
+					</div>
+					<form class="card-body" action="{% url 'frontend:signup' %}" method="post" id="signup_form">
+
+						{% if form_signup.errors or form_signup.non_field_errors %}
+						<div class="alert alert-outline-danger fade show k-margin-b-40" role="alert">
+							<div class="alert-icon"><i class="flaticon-warning"></i></div>
+							<div class="alert-text">
+								<p>There were some errors in the information you entered. Please correct the following:</p>
+								{{ form_signup.non_field_errors }}
+								<ul>
+									{% for field in form_signup %}
+										{% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+									{% endfor %}
+								</ul>
+							</div>
+							<div class="alert-close">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true"><i class="la la-close"></i></span>
+								</button>
+							</div>
+						</div>
+						{% endif %}
+
+						{% bootstrap_field form_signup.email show_help=True %}
+
+						{% bootstrap_field form_signup.password %}
+
+						{% bootstrap_field form_signup.password_verify %}
+
+						{{ form_signup.captcha }}
+
+						<div class="buttons" style="margin-bottom:10px;margin-top:30px;">
+							<button type="submit" class="btn btn-primary" id="signup-btn">
+								Sign Up
+							</button>
+							<button type="button" class="btn btn-secondary">
+								Log In
+							</button>
+						</div>
+
+						{% csrf_token %}
+					</form>
+				</div>
+
+			</div>
+
+			<div class="col col-lg-7 col-md-6 col-sm-12 col-12">
+
+				<div class="card">
+					<div class="card-body">
+						{% story_intro %}
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/moment.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script src="{% static 'js/app.js' %}"></script>
+
+<script>
+function on_signup_submit() {
+	function onSubmit(token) {
+		document.getElementById('signup_form').submit();
+	}
+}
+
+
+$(function(){
+
+$('.btn-secondary', '#login_form').click(function(){
+	$('#login_form').closest('.card').fadeOut('fast', function(){
+		$('#signup_form').closest('.card').fadeIn('fast');
+	});
+});
+
+$('.btn-secondary', '#signup_form').click(function(){
+	$('#signup_form').closest('.card').fadeOut('fast', function(){
+		$('#login_form').closest('.card').fadeIn('fast');
+	});
+});
+
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+{% load static %}<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+	<link rel="apple-touch-icon" sizes="180x180" href="{% static 'countdownhype/images/apple-touch-icon.png' %}">
+	<link rel="icon" type="image/png" sizes="16x16" href="{% static 'countdownhype/images/favicon-16x16.png' %}">
+	<link rel="icon" type="image/png" sizes="32x32" href="{% static 'countdownhype/images/favicon-32x32.png' %}">
+	<link rel="manifest" href="{% static 'countdownhype/images/site.webmanifest' %} ">
+	<link rel="mask-icon" href="{% static 'countdownhype/images/safari-pinned-tag.svg' %}" color="#5bbad5">
+	<link rel="shortcut icon" href="{% static 'countdownhype/images/favicon.ico' %}">
+	<meta name="msapplication-TileColor" content="#ffc40d">
+	<meta name="msapplication-config" content="{% static 'countdownhype/images/browserconfig.xml' %}">
+	<meta name="theme-color" content="#ffffff">
+
+	<title>BeeMe</title>
+
+	<link rel="stylesheet" type="text/css" href="{% static 'countdownhype/style.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'countdownhype/buzz.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'countdownhype/screen.css' %}">
+
+	<script type="text/javascript" src="{% static 'countdownhype/jquery-3.3.1.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'countdownhype/jquery.rwdImageMaps.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'countdownhype/dynamicImageMaps.js' %}"></script>
+</head>
+<body>
+
+	<div class="grid"></div>
+
+	<div class="row">
+		<div class="buzz-wrapper">
+			<div class="text noselect" id="how-does-it-feel">
+				<a href="{% url 'frontend:about' %}">
+					{% for i in 'xxxxx' %}
+					<span>How does it feel to be the internet?</span>
+					{% endfor %}
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<img id="bme" usemap="#cam-map" width="750" height="574" src="{% static 'countdownhype/images/twt.png' %}" />
+
+		<map name="cam-map">
+			<area shape="rectangle" coords="306, 157, 384, 172" href="{% url 'countdown' %}">
+			<area shape="circle" coords="366, 288, 264" href="https://twitter.com/beeme_mit">
+		</map>
+	</div>
+
+	<!-- Audio credit goes to Joseph Paradiso, who built a modular synthesizer. Read more at http://paradiso.media.mit.edu/synth.html -->
+	<iframe src="{% static 'countdownhype/sound/synth_20111007_ars.mp3' %}" type="audio/mpeg" allow="autoplay" style="display:none"></iframe>
+
+</body>

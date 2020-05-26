@@ -1,0 +1,11 @@
+<table class="table table-sm">
+    <tbody>
+    {% if commands %}
+        {% for command in commands %}
+            <tr>                
+                <td>{{ command.command_text }}</td>
+            </tr>
+        {% endfor %}
+    {% endif %}
+    <tbody>
+</table>

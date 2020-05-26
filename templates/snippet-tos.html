@@ -1,0 +1,14 @@
+{% if request.user.is_authenticated and not request.user.tos and not notos %}
+<div class="tos" id="tos" data-url="{% url 'frontend:tos' %}">
+
+	<p>By using this website, you agree to the Terms of Service.</p>
+	<p>Please keep "Accept" to confirm. Or "Reject" to leave to leave the website.</p>
+	<p><a class="link" target="_blank" href="{% url 'frontend:tos' %}">Terms of Service</a></p>
+
+	<p class="buttons">
+		<a href="javascript:;" class="btn btn-primary btn-lg">Accept</a>
+		<a href="/" class="btn btn-secondary btn-lg">Reject</a>
+	</p>
+
+</div>
+{% endif %}

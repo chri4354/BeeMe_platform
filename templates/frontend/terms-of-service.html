@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+
+{% block head %}
+{% endblock %}
+
+
+{% block main %}
+
+<main class="content-main" role="main">
+<div class="content-main-margin">
+
+<h1>Terms of Service</h1>
+
+<p>The following Terms of Service are a binding contract between you and the Scalable Cooperation project at the MIT Media Lab (hereinafter, “Scalable Cooperation”).</p>
+
+<ol>
+<li>YOU ACKNOWLEDGE THAT IN NO EVENT SHALL SCALABLE COOPERATION BE LIABLE TO YOU FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES WHATSOEVER RESULTING FROM YOUR ACCESS TO AND USE OF OUR SERVICE “BEEME.”</li>
+<li>YOU SPECIFICALLY ACKNOWLEDGE THAT SCALABLE COOPERATION SHALL NOT BE LIABLE FOR CONTENT OR THE DEFAMATORY, OFFENSIVE, OR ILLEGAL CONDUCT OF ANY THIRD PARTY AND THAT THE RISK OF HARM OR DAMAGE FROM THE FOREGOING RESTS ENTIRELY WITH YOU.</li>
+<li>You affirm that you are either more than 18 years of age or possess legal parental or guardian consent, and are fully able and competent to enter into the terms set forth in this Terms of Service. YOU ALSO AFFIRM THAT YOU ARE OVER THE AGE OF 13, AS THE SERVICE IS NOT INTENDED FOR CHILDREN UNDER 13. If you are under 13 years of age, please do not use this service.</li>
+<li>You affirm that you understand that your comments may not be anonymous, and can be linked back to the login that you use to access BeeMe. </li>
+<li>You affirm that you understand that Scalable Cooperation may use the information that you provide to BeeMe for research purposes and that the information may be distributed to third parties. </li>
+<li>You agree to not upload to, or distribute or otherwise post any libelous, defamatory, obscene, pornographic, abusive, or otherwise illegal material on the BeeMe site.</li>
+<li>Be courteous. You agree that you will not threaten or verbally abuse other members, use defamatory language, or deliberately disrupt discussions with repetitive messages, meaningless messages or "spam."</li>
+<li>Use respectful language. You agree not to use language that abuses or discriminates on the basis of race, religion, nationality, gender, sexual preference, age, region, disability, etc. Hate speech of any kind is grounds for immediate and permanent suspension of access to all or part of BeeMe.</li>
+</ol>
+
+{% if request.user.is_authenticated and not request.user.tos %}
+<form method="post">
+	<button type="submit" class="btn btn-primary btn-lg" name="accept" value="1">Accept</button>
+	<a href="/" class="btn btn-secondary btn-lg">Reject</a>
+	{% csrf_token %}
+</form>
+{% endif %}
+
+</div>
+</main>
+
+{% endblock %}

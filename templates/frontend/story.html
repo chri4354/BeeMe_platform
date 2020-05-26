@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+
+{% block head %}
+{% endblock %}
+
+
+{% block main %}
+
+<main class="content-main" role="main">
+<div class="content-main-margin">
+
+{{ html1|safe }}
+
+{% if request.user.is_authenticated %}
+
+{{ html2|safe }}
+
+
+<a class="btn btn-primary btn-lg btn-block" href="{% url 'frontend:room' %}">
+	Enter The Story
+</a>
+
+{% endif %}
+
+</div>
+</main>
+
+{% endblock %}
+
+
+{% block javascript %}
+<script>
+$(function(){
+
+	
+
+});
+</script>
+{% endblock %}

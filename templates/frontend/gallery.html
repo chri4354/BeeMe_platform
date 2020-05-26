@@ -1,0 +1,42 @@
+{% extends "base-cacheable.html" %}
+{% load staticfiles %}
+
+
+{% block head %}
+{% endblock %}
+
+
+{% block main %}
+
+<main class="content-main" role="main">
+<div class="content-main-margin">
+
+	<h1>Gallery</h1>
+
+	<div class="row text-center text-lg-left gallery">
+
+		{% for item in items %}
+		<div class="col-lg-3 col-md-4 col-6">
+			<a class="d-block mb-4 h-100" href="{% url 'frontend:gallery_item' item.id %}" title="{{ item.title }}">
+				<img class="img-fluid img-thumbnail" src="{{ item.get_preview_image_src }}" alt="{{ item.title }}">
+			</a>
+		</div>
+		{% endfor %}
+
+	</div>
+
+</div>
+</main>
+
+{% endblock %}
+
+
+{% block javascript %}
+<script>
+$(function(){
+
+	$('div.gallery a[title]').tooltip();
+
+});
+</script>
+{% endblock %}

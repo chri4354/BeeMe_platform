@@ -1,0 +1,158 @@
+body {
+    background-color:#C2C0BF;
+    font-family: 'Noto Sans', sans-serif;
+    margin:0;
+    padding:0;
+}
+
+nav.global-nav {
+    background-color:#FFFFFF;
+    border-bottom: 4px solid #9D3C3C;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+nav.global-nav ul {
+    align-items: stretch;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    height: 46px;
+    justify-content: flex-start;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+nav.global-nav ul > li { }
+
+nav.global-nav ul > li > a {
+    color:#A31F34;
+    display:inline-block;
+    font-weight:bold;
+    line-height: 44px;
+    outline: 0;
+    text-decoration: none;
+    padding:0 20px;
+    width:auto;
+}
+nav.global-nav ul > li.active > a {
+    color:#000000;
+}
+
+nav.global-nav ul > li > a:hover {
+    color:#7A1625;
+    border-bottom-color: #7A1625;
+}
+
+nav.global-nav ul > li.logo a { padding-left:0; }
+nav.global-nav ul > li.logo a img { height:32px; }
+nav.global-nav ul > li.logo a:hover {  }
+nav.global-nav ul > li.end { flex-grow:1; text-align: right; }
+nav.global-nav ul > li.end > a { padding-right:0; }
+
+ul.sidebar-nav { list-style-type:none; margin:0; padding:0; }
+
+.content-main-margin { padding: 2rem 2rem; }
+
+
+#page-outer { }
+#page-outer #page-container { padding: 76px 14px 15px; }
+
+#page-outer #page-container div.dashboard {
+}
+#page-outer #page-container div.dashboard .card { border: none; margin-bottom: 30px; }
+#page-outer #page-container div.dashboard .card .card-header {
+    background-color: #A31F34;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+}
+#page-outer #page-container div.dashboard .card .card-body { padding: 0.5rem; }
+
+#page-outer #page-container main {
+    background-color: #fff;
+    border-radius: .25rem;
+}
+
+#page-outer #page-container main div.video-area iframe { margin-top:0px !important; width:100% !important; }
+
+.card-votes ol {
+    display: block;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.card-votes ol li {
+    display: block;
+}
+.card-votes ol li div.command {
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    padding: 5px 0;
+}
+.card-votes ol li:first-child div.command { padding-top: 0; }
+.card-votes ol li:last-child div.command { border-bottom: none; padding-bottom: 0; }
+.card-votes ol li div.command div.command-meta {
+    line-height: 1em;
+    min-width: 60px;
+    padding: 0 10px 0 0;
+    text-align: center;
+}
+.card-votes ol li div.command div.command-meta button {
+    color: #A31F34;
+    cursor:pointer;
+    background-color: transparent;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    outline:0;
+    padding: 0;
+    text-decoration:none;
+}
+.card-votes ol li div.command div.command-admin {
+    line-height: 1em;
+    width: 24px;
+    padding: 0 0 0 0;
+    text-align: right;
+}
+.card-votes ol li div.command div.command-admin button {
+    color: #F74422;
+    cursor:pointer;
+    background-color: transparent;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    outline:0;
+    padding: 0;
+    text-decoration:none;
+}
+.card-votes ol li div.command div.command-text {
+    color: #555;
+    flex-grow: 1;
+    font-size: 13px;
+}
+
+#page-outer #page-container div.dashboard .card-hive .card-form { background-color: #A31F34; padding: 1rem; }
+#page-outer #page-container div.dashboard .card-hive .card-form textarea { border:none; border-radius: .25rem; margin-bottom: 1rem; padding: 0.5rem; resize:none; width:100%; }
+#page-outer #page-container div.dashboard .card-hive .card-form button.btn { background-color:#7A1625;  border-color:#7A1625; border-radius: .25rem; color:#fff; }
+#page-outer #page-container div.dashboard .card-hive .card-body { }
+#page-outer #page-container div.dashboard .card-hive .card-body .card-text { color:#000; font-size: 1.5rem; padding:2rem 0; text-align:center; transition: all 0.5s ease; }
+#page-outer #page-container div.dashboard .card-hive .card-body .card-text.placeholder { color:#777; font-size: 1.0rem; }
+
+#page-outer #page-container div.dashboard .card-send-command .card-body { padding: 1rem; }
+#page-outer #page-container div.dashboard .card-send-command { background-color: #A31F34; }
+#page-outer #page-container div.dashboard .card-send-command textarea { border:none; border-radius: .25rem; margin-bottom: 1rem; padding: 0.5rem; resize:none; width:100%; }
+#page-outer #page-container div.dashboard .card-send-command button.btn { background-color:#7A1625; border-color:#7A1625; border-radius: .25rem; color:#fff; }
+
+#page-outer #page-container div.dashboard .card#command_queue .card-header { background-color:#058B00; }
+#page-outer #page-container div.dashboard .card#command_queue .card-footer { padding:.5rem 1.25rem; }
+#command_queue div.command { padding-left:10px; }
+#command_queue div.command .btn-sm { font-size: 0.6rem; padding: .2rem .4rem; }
+
+form textarea[name="html"] { font-family:monospace; font-size: 13px; }

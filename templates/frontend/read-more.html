@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+
+{% block head %}
+<style>
+main.content-main h1 { margin-bottom:0.5em; }
+
+main.content-main ul.read-more { margin-right:60px; }
+main.content-main ul.read-more > li { line-height:1.2; padding:0.25em 0; }
+main.content-main ul.read-more > li > strong { display:block; font-size:1.1em; }
+main.content-main ul.read-more > li > a { font-size:0.9em; display:block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+main.content-main .btn-default { background-color:rgba(0,0,0,0.1); font-size:18px; margin-top:2em; }
+</style>
+{% endblock %}
+
+
+{% block main %}
+<main class="content-main" role="main">
+<div class="content-main-margin">
+
+
+<h1>Read more about it</h1>
+
+<h2>In the press</h2>
+
+<ul class="read-more">
+<li><strong>Business Insider:</strong> <a rel="noopener" target="_blank" href="https://www.businessinsider.com/mit-halloween-project-beeme-hive-2018-10">https://www.businessinsider.com/mit-halloween-project-beeme-hive-2018-10</a></li>
+<li><strong>Boston Globe:</strong> <a rel="noopener" target="_blank" href="https://www.bostonglobe.com/metro/2018/10/23/mit-media-lab-releasing-social-experiment-halloween-that-will-let-users-control-person-actions/fzuktp5C7A5qT2M6wPMuzO/story.html">https://www.bostonglobe.com/metro/2018/10/23/mit-media-lab-releasing-social-experiment-halloween-that-will-let-users-control-person-actions/fzuktp5C7A5qT2M6wPMuzO/story.html</a></li>
+<li><strong>BBC:</strong> <a rel="noopener" target="_blank" href="https://www.bbc.com/news/business-46016696">https://www.bbc.com/news/business-46016696</a></li>
+<li><strong>The Verge:</strong> <a rel="noopener" target="_blank" href="https://www.theverge.com/2018/10/26/18029334/mit-media-lab-halloween-beeme-social-experiment">https://www.theverge.com/2018/10/26/18029334/mit-media-lab-halloween-beeme-social-experiment</a></li>
+<li><strong>Repubblica:</strong> <a rel="noopener" target="_blank" href="https://www.repubblica.it/tecnologia/2018/10/29/news/un_software_controlla_la_tua_mente_la_sfida_del_mit_per_halloween-210313504/">https://www.repubblica.it/tecnologia/2018/10/29/news/un_software_controlla_la_tua_mente_la_sfida_del_mit_per_halloween-210313504/</a></li>
+<li><strong>Corriere della Sera:</strong> <a rel="noopener" target="_blank" href="https://www.corriere.it/tecnologia/18_ottobre_31/halloween-scherzetto-mit-controllate-essere-umano-ac4de4ce-dc5e-11e8-8bd6-c59ffaae6497.shtml">https://www.corriere.it/tecnologia/18_ottobre_31/halloween-scherzetto-mit-controllate-essere-umano-ac4de4ce-dc5e-11e8-8bd6-c59ffaae6497.shtml</a></li>
+<li><strong>CNET:</strong> <a rel="noopener" target="_blank" href="https://www.cnet.com/news/mit-media-lab-wants-you-to-defeat-an-evil-ai-by-controlling-an-actors-movements-beeme-game/">https://www.cnet.com/news/mit-media-lab-wants-you-to-defeat-an-evil-ai-by-controlling-an-actors-movements-beeme-game/</a></li>
+<li><strong>El Pais:</strong> <a rel="noopener" target="_blank" href="https://retina.elpais.com/retina/2018/10/31/innovacion/1540971232_269214.html">https://retina.elpais.com/retina/2018/10/31/innovacion/1540971232_269214.html</a></li>
+<li><strong>El Pais (2) :</strong> <a rel="noopener" target="_blank" href="https://elpais.com/tecnologia/2018/10/30/actualidad/1540893930_649241.html">https://elpais.com/tecnologia/2018/10/30/actualidad/1540893930_649241.html</a></li>
+<li><strong>ABC:</strong> <a rel="noopener" target="_blank" href="https://www.abc.net.au/news/2018-10-31/mit-launches-halloween-game-where-internet-controls-real-person/10443768">https://www.abc.net.au/news/2018-10-31/mit-launches-halloween-game-where-internet-controls-real-person/10443768</a></li>
+<li><strong>Forbes:</strong> <a rel="noopener" target="_blank" href="https://www.forbes.com/sites/emmawoollacott/2018/10/31/mit-lets-public-control-actor-in-halloween-experiment-what-could-possibly-go-wrong/#27d3510d1cd6">https://www.forbes.com/sites/emmawoollacott/2018/10/31/mit-lets-public-control-actor-in-halloween-experiment-what-could-possibly-go-wrong/#27d3510d1cd6</a></li>
+<li><strong>Gizmodo:</strong> <a rel="noopener" target="_blank" href="https://gizmodo.com/absolutely-nothing-will-go-wrong-when-mit-lets-the-inte-1830040769">https://gizmodo.com/absolutely-nothing-will-go-wrong-when-mit-lets-the-inte-1830040769</a></li>
+<li><strong>Geek.com:</strong> <a rel="noopener" target="_blank" href="https://www.geek.com/tech/mit-launches-dystopian-internet-game-on-halloween-1758097/">https://www.geek.com/tech/mit-launches-dystopian-internet-game-on-halloween-1758097/</a></li>
+</ul>
+
+
+<h2>In the Radio</h2>
+
+<ul class="read-more">
+<li><strong>I Heart Radio - Newstaslk1010 (Live):</strong> <a rel="noopener" target="_blank" href="http://www.iheartradio.ca/newstalk-1010/controlling-another-human-1.8527797?mode=Article&autoplay=1.8527797">http://www.iheartradio.ca/newstalk-1010/controlling-another-human-1.8527797?mode=Article&autoplay=1.8527797</a></li>
+<li><strong>CBC:</strong> <a rel="noopener" target="_blank" href="https://www.cbc.ca/radio/spark/mit-experiment-let-internet-users-control-a-human-1.4887508">https://www.cbc.ca/radio/spark/mit-experiment-let-internet-users-control-a-human-1.4887508</a></li>
+<li><strong>WRadio (Live 10.31.2018 15:40 pm EDT):</strong>  <a rel="noopener" target="_blank" href="http://www.wradio.com.co">http://www.wradio.com.co</a></li>
+<li><strong>BFM:</strong> <a rel="noopener" target="_blank" href="https://www.bfm.my/ent-bb-beeme-control-human-halloween.html">https://www.bfm.my/ent-bb-beeme-control-human-halloween.html</a></li>
+<li><strong>El Diario:</strong> <a rel="noopener" target="_blank" href="https://www.eldiario.es/tecnologia/MIT-Halloween-permitiendote-controlar-Internet_0_830817645.html">https://www.eldiario.es/tecnologia/MIT-Halloween-permitiendote-controlar-Internet_0_830817645.html</a></li>
+</ul>
+
+
+<h2>On TV</h2>
+
+<ul class="read-more">
+<li><strong>Twit:</strong> <a rel="noopener" target="_blank" href="https://www.twit.tv/shows/tech-news-weekly/episodes/56">https://www.twit.tv/shows/tech-news-weekly/episodes/56</a></li>
+<li><strong>WTNH News8:</strong> <a rel="noopener" target="_blank" href="https://www.wtnh.com/news/technology/-techtuesday-college-students-create-social-experiment-to-control-a-human/1561881565?utm_medium=social&utm_source=twitter_WTNH&fbclid=IwAR0fjh8-iY8DNzXPKY-V8Rgy1bSfaEBwr9L1lcwsyahzn1cNopIoV1E3sh4">https://www.wtnh.com/news/technology/-techtuesday-college-students-create-social-experiment-to-control-a-human/1561881565?utm_medium=social&utm_source=twitter_WTNH&fbclid=IwAR0fjh8-iY8DNzXPKY-V8Rgy1bSfaEBwr9L1lcwsyahzn1cNopIoV1E3sh4</a></li>
+<li><strong>buzz/60:</strong> <a rel="noopener" target="_blank" href="https://www.youtube.com/watch?v=luaD7jQYyhk">https://www.youtube.com/watch?v=luaD7jQYyhk</a></li>
+<li><strong>Nowthisnews:</strong> <a rel="noopener" target="_blank" href="https://nowthisnews.com/videos/future/beeme-is-a-game-for-controlling-others-movements">https://nowthisnews.com/videos/future/beeme-is-a-game-for-controlling-others-movements</a></li>
+</ul>
+
+<a class="btn btn-default" href="{% url 'frontend:about' %}">
+	<i class="fas fa-chevron-left"></i>
+	Read about BeeMe
+</a>
+
+</div>
+</main>
+{% endblock %}

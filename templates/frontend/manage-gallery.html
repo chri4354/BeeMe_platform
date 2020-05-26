@@ -1,0 +1,221 @@
+{% extends "base-2col.html" %}
+{% load staticfiles %}
+
+
+{% block head %}
+<style>
+form.gallery-item { background-color:#eee; padding:20px 20px; }
+form.gallery-item ul.gallery-item-type { display:block; list-style-type:none; margin:0; padding:0; }
+form.gallery-item ul.gallery-item-type > li { display:inline-block; padding-left:10px; }
+form.gallery-item ul.gallery-item-type > li:first-child { padding-left:0px; }
+form.gallery-item ul.gallery-item-type > li label { margin:0; padding:0; }
+form.gallery-item div.gallery-item-title { display:none; margin:20px 0 0 0; }
+form.gallery-item div.gallery-item-input { display:none; margin:20px 0 0 0; }
+form.gallery-item div.gallery-actions { display:none; margin:20px 0 0 0; }
+
+ol.gallery-items { margin-top:30px; }
+ol.gallery-items > li { }
+ol.gallery-items > li > figure { width: 300px; }
+ol.gallery-items > li > figure > img { width: 100%; }
+ol.gallery-items > li.first a.btn-up { opacity: 0.5; }
+ol.gallery-items > li.last a.btn-down { opacity: 0.5; }
+</style>
+{% endblock %}
+
+
+{% block main %}
+
+<div class="card">
+	<div class="card-body">
+
+		<form class="gallery-item" method="post" enctype="multipart/form-data">
+
+			<ul class="gallery-item-type">
+				<li>
+					<label>
+						<input type="radio" name="type" value="image" rel="gallery_image" required>
+						Image
+					</label>
+				</li>
+				<li>
+					<label>
+						<input type="radio" name="type" value="vimeo" rel="gallery_vimeo" required>
+						Vimeo
+					</label>
+				</li>
+				<li>
+					<label>
+						<input type="radio" name="type" value="youtube" rel="gallery_youtube" required>
+						YouTube
+					</label>
+				</li>
+			</ul>
+
+			<div class="gallery-item-title">
+				<label>Title</label>
+				<input type="text" name="title" style="width:400px;" required>
+			</div>
+
+			<div class="gallery-item-input" id="gallery_image">
+				<label>Upload Image</label>
+				<input type="file" name="image">
+			</div>
+
+			<div class="gallery-item-input" id="gallery_vimeo">
+				<label>Vimeo Video ID</label>
+				<input type="text" name="vimeo" />
+			</div>
+
+			<div class="gallery-item-input" id="gallery_youtube">
+				<label>YouTube Video ID</label>
+				<input type="text" name="youtube" />
+			</div>
+
+			<div class="gallery-actions">
+				<button type="submit" class="btn btn-primary">Add</button>
+			</div>
+
+			{% csrf_token %}
+		</form>
+
+		<form method="post">
+			<ol class="gallery-items">
+
+				{% for item in items %}
+				<li {% if forloop.first %}class="first"{% endif %} {% if forloop.last %}class="last"{% endif %}>
+					<figure>
+						<img class="preview" src="{{ item.get_preview_image_src }}" />
+						<figcaption>
+							<input type="hidden" name="ord_{{ item.id }}" value="{{ forloop.counter }}" />
+							<a class="btn-delete" href="javascript:;" data-id="{{ item.id }}"><i class="fas fa-trash"></i></a>
+							<a class="btn-up" href="javascript:;"><i class="fas fa-arrow-circle-up"></i></a>
+							<a class="btn-down" href="javascript:;"><i class="fas fa-arrow-circle-down"></i></a>
+							{{ item.title }}
+							<small>({{ item.type }})</small>
+						</figcaption>
+					</figure>
+				</li>
+				{% endfor %}
+
+			</ol>
+
+			{% csrf_token %}
+			<input type="hidden" name="action" value="reorder" />
+			<input type="hidden" name="id" />
+		</form>
+
+	</div>
+</div>
+
+{% endblock %}
+
+
+{% block left %}
+<div class="card">
+	<div class="card-body">
+		<ul class="sidebar-nav">
+			<li><a href="{% url 'frontend:manage_section' 'profile' %}">My Profile</a></li>
+			<li><a href="{% url 'frontend:manage_section' 'command-parmeters' %}">Command Parameters</a></li>
+			<li><a href="{% url 'frontend:manage_gallery' %}">Gallery</a></li>
+			<li><a href="{% url 'frontend:manage_section' 'diy-instructions' %}">DIY Instructions</a></li>
+			<li><a href="{% url 'frontend:manage_section' 'story-intro' %}">Story Intro</a></li>
+			<li><a href="{% url 'frontend:manage_section' 'team1-media' %}">Team #1 Media</a></li>
+			<li><a href="{% url 'frontend:manage_section' 'team1-story' %}">Team #1 Story</a></li>
+			<li><a href="{% url 'frontend:manage_section' 'team2-media' %}">Team #2 Media</a></li>
+			<li><a href="{% url 'frontend:manage_section' 'team2-story' %}">Team #2 Story</a></li>
+			<li><a href="{% url 'frontend:manage_section' 'users' %}">Users</a></li>
+		</ul>
+	</div>
+</div>
+{% endblock %}
+
+
+{% block javascript %}
+<script>
+$(function(){
+
+	var $gallery_title = $('.gallery-item-title');
+	var $gallery_actions = $('.gallery-actions');
+
+	$('input[name="type"]').prop('checked', false);
+	$('input[name="type"]').change(function(){
+		var $input = $(this);
+		var rel = $input.attr('rel');
+
+		if ( !rel ) return;
+
+		var elem = document.getElementById(rel);
+
+		$('div.gallery-item-input').hide();
+		$('div.gallery-item-input input').prop('required', false);
+
+		$(elem).show();
+		$(elem).find('input').prop('required', true);
+
+		$gallery_title.show();
+		$gallery_actions.show();
+	});
+
+	$('a.btn-delete').click(function(){
+		if ( !confirm( 'Are you sure you want to delete this item?' ) ) return;
+
+		var $a = $(this);
+		var $li = $a.closest('li');
+		var $form = $li.closest('form');
+		var $action = $form.find('[name="action"]');
+		var $id = $form.find('[name="id"]');
+
+		var id = $a.attr('data-id');
+
+		$action.val('delete');
+		$id.val(id);
+
+		$form.submit()
+	});
+
+	$('a.btn-up').click(function(){
+		var $a = $(this);
+		var $li = $a.closest('li');
+		var $form = $li.closest('form');
+		var $action = $form.find('[name="action"]');
+
+		if ( $li.hasClass('first') ) return;
+
+		var $input = $li.find('input');
+		var $prev_input = $li.prev('li').find('input');
+
+		var val = $input.val();
+		var prev_val = $prev_input.val();
+
+		$action.val('reorder');
+		$input.val(prev_val);
+		$prev_input.val(val);
+
+		$form.submit()
+	});
+
+	$('a.btn-down').click(function(){
+		var $a = $(this);
+		var $li = $a.closest('li');
+		var $form = $li.closest('form');
+		var $action = $form.find('[name="action"]');
+
+		if ( $li.hasClass('last') ) return;
+
+		var $input = $li.find('input');
+		var $next_input = $li.next('li').find('input');
+
+		var val = $input.val();
+		var next_val = $next_input.val();
+
+		$action.val('reorder');
+		$input.val(next_val);
+		$next_input.val(val);
+
+		$form.submit()
+	});
+
+});
+</script>
+
+{% endblock %}

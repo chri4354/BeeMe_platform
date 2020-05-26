@@ -1,0 +1,34 @@
+{% extends "base-cacheable.html" %}
+{% load staticfiles %}
+
+
+{% block head %}
+<style>
+main.content-main h1 { margin-bottom:0.5em; }
+
+main.content-main p { font-size:1.1rem;}
+
+main.content-main .btn-default { background-color:rgba(0,0,0,0.1); font-size:18px; margin-top:2em; }
+</style>
+{% endblock %}
+
+
+{% block main %}
+<main class="content-main" role="main">
+<div class="content-main-margin">
+
+
+<h1>What is beeme?</h1>
+
+<p>BeeMe is a unique performance piece organized by MIT Media Lab. BeeMe was performed on October 2018, Halloween night, when more than a thousand people participated online in a sci-fi live game featuring an epic battle between collective and artificial intelligence. The game used real-time collective intelligence to allow Internet users to collectively control, in the moment, two human avatars, the “Agents”, who operated in the physical space of MIT campus. The online crowd guided the two Agents through progressively more difficult missions, trying to stop the evil AI “Zookd” from taking over the Internet.</p>
+
+<p>BeeMe is a synthesis of many cultural themes in society. It brings together IRL streaming and our fear of being constantly watched; Internet-enabled collective action and our resignation of being controlled by algorithms. It brings people together by creating a shared customized experience when algorithmic customization brings people apart. It enabled many to control a few, when oftentimes few control many. BeeMe is a tribute to many pop culture icons from Black Mirror to CYOA books. It played on our obsession for AI and Internet challenges through the medium of performance arts. BeeMe explored how to expres our collective will in a digital society.</p>
+
+<a class="btn btn-default" href="{% url 'frontend:read-more' %}">
+	Read more about it
+	<i class="fas fa-chevron-right"></i>
+</a>
+
+</div>
+</main>
+{% endblock %}

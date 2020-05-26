@@ -1,0 +1,14 @@
+<h1>Team #2 - Media</h1>
+
+<form method="post">
+
+	<div class="form-group">
+		<label for="html">HTML for Persicope</label>
+		<textarea class="form-control" name="html" id="html" rows="15" style="resize:vertical; white-space: pre;">{{ config.TEAM2_MEDIA }}</textarea>
+	</div>
+
+	<button type="submit" class="btn btn-primary">Save</button>
+	<label><input type="checkbox" name="reload" checked="checked" value="1"> force room reload on change</label>
+
+	{% csrf_token %}
+</form>
